@@ -17,7 +17,6 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    //TODO Check why data.sql data is not being automatically imported
 
     @PostMapping
     public ResponseEntity<CreateWalletResponse> createWallet(@RequestBody CreateWalletRequest request) {

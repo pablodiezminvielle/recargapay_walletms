@@ -22,7 +22,7 @@ CREATE TABLE WALLET (
 
 -- Create transaction table
 CREATE TABLE TRANSACTION_RPAY (
-                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                             id UUID PRIMARY KEY,
                              wallet_id UUID NOT NULL,
                              amount DECIMAL(19, 2) NOT NULL,
                              timestamp TIMESTAMP NOT NULL,

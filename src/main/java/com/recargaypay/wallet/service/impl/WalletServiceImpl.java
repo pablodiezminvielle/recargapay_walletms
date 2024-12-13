@@ -15,7 +15,6 @@ import com.recargaypay.wallet.repository.UserRepository;
 import com.recargaypay.wallet.repository.WalletRepository;
 import com.recargaypay.wallet.service.WalletService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -32,14 +31,16 @@ public class WalletServiceImpl implements WalletService {
     public static final String USER_NOT_FOUND_FORMAT = "User %s not found";
     public static final String NO_FUNDS_FORMAT = "Insufficient funds in wallet: %s";
 
-    @Autowired
-    private WalletRepository walletRepository;
+    private final WalletRepository walletRepository;
+    private final UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    public WalletServiceImpl(WalletRepository walletRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
+        this.walletRepository = walletRepository;
+        this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
+    }
 
     @Override
     @Transactional
@@ -121,7 +122,7 @@ public class WalletServiceImpl implements WalletService {
         destinationWallet.setBalance(destinationWallet.getBalance().add(amount));
 
         // Create transactions for both wallets --withdraw from source and deposit to destination --
-        Transaction withdrawalTransaction = createTransaction(sourceWallet, amount.negate(), TransactionType.WITHDRAWAL);
+        Transaction withdrawalTransaction = createTransaction(sourceWallet, amount.negate(), TransactionType.TRANSFER);
         Transaction depositTransaction = createTransaction(destinationWallet, amount, TransactionType.DEPOSIT);
 
         walletRepository.save(sourceWallet);

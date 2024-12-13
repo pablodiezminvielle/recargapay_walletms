@@ -49,7 +49,7 @@ public interface WalletService {
      * @param sourceWalletId UUID of the source wallet
      * @param destinationWalletId UUID of the destination wallet
      * @param amount The amount to transfer
-     * @return WalletTransactionResponse with the updated details
+     * @return WalletTransactionResponse containing the updated details of the destination wallet, including the updated balance and the associated user
      */
     WalletTransactionResponse transfer(UUID sourceWalletId, UUID destinationWalletId, BigDecimal amount);
 }
